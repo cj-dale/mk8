@@ -1,0 +1,35 @@
+body {
+    background-color: rgba(246,246,246,255);
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+#navigation-bar {
+    width: 100%;
+    text-align: center;
+}
+
+#navigation-bar li {
+    display: inline-block;
+    margin-right: 45px;
+    border: 1px solid #000;
+}
+
+#navigation-bar a {
+    display: inline-block;
+    padding: 3px;
+    text-decoration: none;
+    background-color: #fff;
+    color: #009;
+}
+
+#navigation-bar a:hover {
+    background-color: #009;
+    color: #fff;
+}
+
+img {
+    width: 200px;
+    height: auto;
+}
+  
