@@ -28,8 +28,19 @@ body {
     color: #fff;
 }
 
-img {
-    width: 200px;
-    height: auto;
+div {
+    display: flex;
+  }
+
+table {
+    display: block;
+    width: 100px;
+    table-layout: fixed;
+}
+td{
+    width: 100px;
+}
+th{
+    width: 100px; background-color: rgb(240, 240, 240); text-align: center;
 }
   
