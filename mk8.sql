@@ -7,6 +7,11 @@ DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS wheels;
 DROP TABLE IF EXISTS gliders;
 
+CREATE TABLE users (
+  username VARCHAR(255) PRIMARY KEY,
+  password_hash VARCHAR(255)
+);
+
 CREATE TABLE characters (
   name VARCHAR(255) PRIMARY KEY,
   speed FLOAT,
