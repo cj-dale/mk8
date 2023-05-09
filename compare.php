@@ -10,7 +10,7 @@
     <h1>Compare Customizations</h1>
     <nav>
         <ul id="navigation-bar">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li><a href="stats.html">MK8 Statistics</a></li>
             <li><a href="customizations.php">My Customizations</a></li>
             <li><a href="compare.html">Compare Customizations</a></li>
