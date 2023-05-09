@@ -30,15 +30,14 @@
     session_start(); // start (or resume) session
     
     // create database connection ($connection)
-    $connection = new mysqli("localhost", "student", "CompSci364",
-                             "student");
+    $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
     
     $error = false;
     if (! isset($_SESSION["username"]) // already authenticated
         && isset($_POST["username"], $_POST["password"])) {
       // query database for account information
       $statement = $connection->prepare("SELECT password_hash ".
-                                        "FROM Users ".
+                                        "FROM users ".
                                         "WHERE username = ?;");
       $statement->bind_param("s", $_POST["username"]);
     
@@ -52,7 +51,7 @@
           // store the username to indicate authentication
           $_SESSION["username"] = $_POST["username"];
         }
-      }
+      } 
     
       $error = true;
     }
@@ -87,11 +86,7 @@
         </form>
     <br>
     <h2>Don't have an account? Create one!</h2>
-    <?php
-      // create database connection ($connection)
-      $connection = new mysqli("localhost", "student", "CompSci364",
-      "student");
-      ?>
+    
 </body>
 
 </html>
