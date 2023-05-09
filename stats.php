@@ -48,7 +48,7 @@
     ?>
     <br>
     <br>
-    <img style="width: 600px; display: block; margin-left: 10%;
+    <img style="width: 600px; display: block; margin-left: 15%;
     height: auto; float: left;" src="characters.jpg" alt="characters">
     </div>
     <h3>Vehicle</h3>
@@ -81,7 +81,7 @@
     echo "</table>";
     mysqli_close($connection);
     ?>
-    <img style="width: 600px; display: block; margin-left: 10%;
+    <img style="width: 600px; display: block; margin-left: 15%;
     height: auto; float: left;" src="vehicles.jpg" alt="vehicle">
     
     <h3>Wheels</h3>
@@ -114,7 +114,7 @@
     echo "</table>";
     mysqli_close($connection);
     ?>
-    <img style="width: 600px; display: block; margin-left: 10%;
+    <img style="width: 600px; display: block; margin-left: 15%;
         height: auto; float: left;" src="wheels.jpg" alt="wheels">
     <h3>Glider</h3>
     <br>
@@ -146,7 +146,7 @@
     echo "</table>";
     mysqli_close($connection);
     ?>
-    <img style="width: 600px; display: block; margin-left: 10%;
+    <img style="width: 600px; display: block; margin-left: 15%;
         height: auto; float: left;" src="glider.jpg" alt="glider">
     
 </body>
