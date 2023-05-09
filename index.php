@@ -51,20 +51,28 @@
           // store the username to indicate authentication
           $_SESSION["username"] = $_POST["username"];
         }
-      } 
-    
-      $error = true;
-    }
-    
-    if (isset($_SESSION["username"])) { // authenticated
-      $location = dirname($_SERVER["PHP_SELF"]);
-      if (isset($_REQUEST["redirect"])) {
-        $location = $_REQUEST["redirect"];
+      } else {
+        $statement->close();
+        $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+        $statement = $connection->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
+        $statement->bind_param("ss", $_POST["username"], $password_hash);
+        if ($statement->execute()) {
+          $_SESSION["username"] = $_POST["username"];
+        }
+        $error = true;
       }
-    
-      // redirect to requested page
-      header("Location: ".$location);
     }
+    
+    $sql = "SELECT * FROM users";
+    $result = $connection->query($sql);
+    while ($row = $result->fetch_assoc()) {
+      echo "Username: " . $row["username"] . "<br>";
+      echo "Password: " . $row["password_hash"] . "<br>";
+      echo "<br>";
+    }
+    $connection->close();
+    
+    
     
      ?>
         <?php
