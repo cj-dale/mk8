@@ -8,8 +8,6 @@
 <body>
 
     <h1>Vehicle Customizations</h1>
-
-
     <nav>
         <ul id="navigation-bar">
             <li><a href="index.php">Home</a></li>
@@ -18,332 +16,139 @@
             <li><a href="compare.php">Compare Customizations</a></li>
         </ul>
     </nav>
-
     <h3>Character</h3>
-    <table cellpadding="1" cellspacing="1" border="1">
-        <tbody>
-            <tr>
-                <th> Character<br></th>
-                <th> Speed<br></th>
-                <th> Acceleration<br></th>
-                <th> Weight<br></th>
-                <th> Handling<br></th>
-                <th> Traction<br></th>
-                <th> Mini-Turbo<br></th>
-            </tr>
-            <tr>
-                <td> Mario </td>
-                <td> 3.75</td>
-                <td> 2.5</td>
-                <td> 3.75</td>
-                <td> 3.25</td>
-                <td> 3.75</td>
-                <td> 2.25</td>
-            </tr>
-            <tr>
-                <td>Luigi</td>
-                <td> 3.75
-                </td>
-                <td> 2.5
-                </td>
-                <td> 3.75
-                </td>
-                <td> 3.25
-                </td>
-                <td> 3.75
-                </td>
-                <td> 2.25
-                </td>
-            </tr>
-            <tr>
-                <td>Peach</td>
-                <td> 3.25
-                </td>
-                <td> 2.75
-                </td>
-                <td> 3.25
-                </td>
-                <td> 3.75
-                </td>
-                <td> 4
-                </td>
-                <td> 2.5
-                </td>
-            </tr>
-            <tr>
-                <td>Daisy</td>
-                <td> 3.25
-                </td>
-                <td> 2.75
-                </td>
-                <td> 3.25
-                </td>
-                <td> 3.75
-                </td>
-                <td> 4
-                </td>
-                <td> 2.5
-                </td>
-            </tr>
-            <tr>
-                <td>Yoshi</td>
-                <td> 3.25
-                </td>
-                <td> 2.75
-                </td>
-                <td> 3.25
-                </td>
-                <td> 3.75
-                </td>
-                <td> 4
-                </td>
-                <td> 2.5
-                </td>
-            </tr>
-            <tr>
-                <td>Toad</td>
-                <td> 2.75
-                </td>
-                <td> 3
-                </td>
-                <td> 2.75
-                </td>
-                <td> 4.25
-                </td>
-                <td> 4.25
-                </td>
-                <td> 2.75
-                </td>
-            </tr>
-            <tr>
-                <td>Koopa Troopa</td>
-                <td> 2.75
-                </td>
-                <td> 3
-                </td>
-                <td> 2.75
-                </td>
-                <td> 4.25
-                </td>
-                <td> 4.25
-                </td>
-                <td> 2.75
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <img style="width: 400px; display: block; margin-left: 5%;
+    <br>
+    <?php
+    // Establish a connection to the database
+    $connection = new mysqli("localhost", "student", "CompSci364","MK8");
+    $table = mysqli_query($connection, "SELECT * FROM characters");
+    echo '<table cellpadding="1" cellspacing="1" border="1">';
+    echo "<tr>
+    <th> Character<br></th>
+    <th> Speed<br></th>
+    <th> Acceleration<br></th>
+    <th> Weight<br></th>
+    <th> Handling<br></th>
+    <th> Traction<br></th>
+    <th> Mini-Turbo<br></th>
+    </tr>";
+    while ($row = mysqli_fetch_assoc($table)){
+        echo "<tr>
+            <td>".$row['name']."</td>
+            <td>".$row['speed']."</td>
+            <td>".$row['acceleration']."</td>
+            <td>".$row['weight']."</td>
+            <td>".$row['handling']."</td>
+            <td>".$row['traction']."</td>
+            <td>".$row['miniturbo']."</td>
+          </tr>";
+    }
+    echo "</table>";
+    mysqli_close($connection);
+    ?>
+    <br>
+    <br>
+    <img style="width: 600px; display: block; margin-left: 10%;
     height: auto; float: left;" src="characters.jpg" alt="characters">
     </div>
     <h3>Vehicle</h3>
-    <img style="width: 400px; display: block; margin-left: 5%;
+    <br>
+    <?php
+    // Establish a connection to the database
+    $connection = new mysqli("localhost", "student", "CompSci364","MK8");
+    $table = mysqli_query($connection, "SELECT * FROM vehicles");
+    echo '<table cellpadding="1" cellspacing="1" border="1">';
+    echo "<tr>
+    <th> Vehicle <br></th>
+    <th> Speed<br></th>
+    <th> Acceleration<br></th>
+    <th> Weight<br></th>
+    <th> Handling<br></th>
+    <th> Traction<br></th>
+    <th> Mini-Turbo<br></th>
+    </tr>";
+    while ($row = mysqli_fetch_assoc($table)){
+        echo "<tr>
+            <td>".$row['name']."</td>
+            <td>".$row['speed']."</td>
+            <td>".$row['acceleration']."</td>
+            <td>".$row['weight']."</td>
+            <td>".$row['handling']."</td>
+            <td>".$row['traction']."</td>
+            <td>".$row['miniturbo']."</td>
+          </tr>";
+    }
+    echo "</table>";
+    mysqli_close($connection);
+    ?>
+    <img style="width: 600px; display: block; margin-left: 10%;
     height: auto; float: left;" src="vehicles.jpg" alt="vehicle">
-    <table cellpadding="1" cellspacing="1" border="1" style="width: 600px;">
-        <tbody>
-            <th> Vehicle<br></th>
-            <th> Speed<br></th>
-            <th> Acceleration<br></th>
-            <th> Weight<br></th>
-            <th> Handling<br></th>
-            <th> Traction<br></th>
-            <th> Mini-Turbo<br></th>
-            </tr>
-            <tr>
-                <td>Standard Kart</td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-            </tr>
-            <tr>
-                <td>Pipe Frame</td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-                <td> -0.25<br></td>
-                <td> +0.5<br></td>
-                <td> -0.5<br></td>
-                <td> +0.25<br></td>
-            </tr>
-            <tr>
-                <td>Mach 8<br></td>
-                <td> +0.5<br></td>
-                <td> -0.25<br></td>
-                <td> +0.25<br></td>
-                <td> 0<br></td>
-                <td> -0.5<br></td>
-                <td> -0.5<br></td>
-            </tr>
-            <tr>
-                <td>Steel Driver</td>
-                <td> 0<br></td>
-                <td> -0.5<br></td>
-                <td> +0.5<br></td>
-                <td> -0.5<br></td>
-                <td> +0.5<br></td>
-                <td> -0.75<br></td>
-            </tr>
-            <tr>
-                <td>Cat Cruiser</td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-            </tr>
-            <tr>
-                <td>Circuit Special<br></th>
-                <td> +0.5<br></td>
-                <td> -0.25<br></td>
-                <td> +0.25<br></td>
-                <td> 0<br></td>
-                <td> -1<br></td>
-                <td> -0.5<br></td>
-            </tr>
-            <tr>
-                <td>Tri-Speeder<br></th>
-                <td> 0<br></td>
-                <td> -0.5<br></td>
-                <td> +0.5<br></td>
-                <td> -0.5<br></td>
-                <td> +0.5<br></td>
-                <td> -0.75<br></td>
-            </tr>
-            <tr>
-                <td>Badwagon<br></td>
-                <td> 0<br></td>
-                <td> -0.5<br></td>
-                <td> +0.5<br></td>
-                <td> -0.5<br></td>
-                <td> +0.5<br></td>
-                <td> -0.75<br></td>
-            </tr>
-        </tbody>
-    </table>
+    
     <h3>Wheels</h3>
-    <img style="width: 400px; display: block; margin-left: 5%;
+    <br>
+    <?php
+    // Establish a connection to the database
+    $connection = new mysqli("localhost", "student", "CompSci364","MK8");
+    $table = mysqli_query($connection, "SELECT * FROM wheels");
+    echo '<table cellpadding="1" cellspacing="1" border="1">';
+    echo "<tr>
+    <th> Wheel <br></th>
+    <th> Speed<br></th>
+    <th> Acceleration<br></th>
+    <th> Weight<br></th>
+    <th> Handling<br></th>
+    <th> Traction<br></th>
+    <th> Mini-Turbo<br></th>
+    </tr>";
+    while ($row = mysqli_fetch_assoc($table)){
+        echo "<tr>
+            <td>".$row['name']."</td>
+            <td>".$row['speed']."</td>
+            <td>".$row['acceleration']."</td>
+            <td>".$row['weight']."</td>
+            <td>".$row['handling']."</td>
+            <td>".$row['traction']."</td>
+            <td>".$row['miniturbo']."</td>
+          </tr>";
+    }
+    echo "</table>";
+    mysqli_close($connection);
+    ?>
+    <img style="width: 600px; display: block; margin-left: 10%;
         height: auto; float: left;" src="wheels.jpg" alt="wheels">
-    <table cellpadding="1" cellspacing="1" border="1" style="width: 600px;">
-        <tbody>
-            <th> Wheel<br></th>
-            <th> Speed<br></th>
-            <th> Acceleration<br></th>
-            <th> Weight<br></th>
-            <th> Handling<br></th>
-            <th> Traction<br></th>
-            <th> Mini-Turbo<br></th>
-            </tr>
-            <tr>
-                <td>Standard</td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-            </tr>
-            <tr>
-                <td>Monster<br></td>
-                <td> 0<br></td>
-                <td> -0.5<br></td>
-                <td> +0.5<br></td>
-                <td> -0.75<br></td>
-                <td> +0.75<br></td>
-                <td> 0<br></td>
-            </tr>
-            <tr>
-                <td>Roller<br></td>
-                <td> -0.5<br></td>
-                <td> +1<br></td>
-                <td> -0.5<br></td>
-                <td> +0.25<br></td>
-                <td> -0.25<br></td>
-                <td> +1.5<br></td>
-            </tr>
-            <tr>
-                <td>Slim<br></td>
-                <td> +0.25<br></td>
-                <td> -0.25<br></td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-                <td> -0.5<br></td>
-                <td> +0.25<br></td>
-            </tr>
-        </tbody>
-    </table>
     <h3>Glider</h3>
-    <img style="width: 400px; display: block; margin-left: 5%;
+    <br>
+    <?php
+    // Establish a connection to the database
+    $connection = new mysqli("localhost", "student", "CompSci364","MK8");
+    $table = mysqli_query($connection, "SELECT * FROM gliders");
+    echo '<table cellpadding="1" cellspacing="1" border="1">';
+    echo "<tr>
+    <th> Glider <br></th>
+    <th> Speed<br></th>
+    <th> Acceleration<br></th>
+    <th> Weight<br></th>
+    <th> Handling<br></th>
+    <th> Traction<br></th>
+    <th> Mini-Turbo<br></th>
+    </tr>";
+    while ($row = mysqli_fetch_assoc($table)){
+        echo "<tr>
+            <td>".$row['name']."</td>
+            <td>".$row['speed']."</td>
+            <td>".$row['acceleration']."</td>
+            <td>".$row['weight']."</td>
+            <td>".$row['handling']."</td>
+            <td>".$row['traction']."</td>
+            <td>".$row['miniturbo']."</td>
+          </tr>";
+    }
+    echo "</table>";
+    mysqli_close($connection);
+    ?>
+    <img style="width: 600px; display: block; margin-left: 10%;
         height: auto; float: left;" src="glider.jpg" alt="glider">
-    <table cellpadding="1" cellspacing="1" border="1" style="width: 600px;">
-        <tbody>
-            <th> Wheel<br></th>
-            <th> Speed<br></th>
-            <th> Acceleration<br></th>
-            <th> Weight<br></th>
-            <th> Handling<br></th>
-            <th> Traction<br></th>
-            <th> Mini-Turbo<br></th>
-            </tr>
-            <tr>
-                <td>Super Glide</td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-            </tr>
-            <tr>
-                <td>Cloud Glider<br></td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-                <td> +0.25<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-            </tr>
-            <tr>
-                <td>Wario Wing</td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-            </tr>
-            <td>Waddle Wing</td>
-            <td> 0<br></td>
-            <td> 0<br></td>
-            <td> 0<br></td>
-            <td> 0<br></td>
-            <td> 0<br></td>
-            <td> 0<br></td>
-            </tr>
-            <tr>
-                <td>Peach Parasol<br>
-                </td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-                <td> +0.25<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-            </tr>
-            <tr>
-                <td>Parachute<br></td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-                <td> +0.25<br></td>
-                <td> 0<br></td>
-                <td> 0<br></td>
-                <td> +0.25<br></td>
-            </tr>
-            <tr>
-        </tbody>
-    </table>
-
+    
 </body>
 
 </html>

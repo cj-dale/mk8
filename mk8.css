@@ -30,11 +30,10 @@ body {
 
 table {
     display: block;
-    width: 100px;
     table-layout: fixed;
     float: right;
-    width: 600px;
-    margin-right: 5%;
+    width: 700px;
+    margin-right: 10%;
 }
 td{
     width: 100px;
@@ -44,7 +43,7 @@ th{
 }
 h3{
     clear: both;
-    padding-top: 20px;
+    padding-top: 30px;
 }
 .center{
     align-content: left;
