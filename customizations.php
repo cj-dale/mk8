@@ -14,7 +14,7 @@
     <nav>
         <ul id="navigation-bar">
             <li><a href="index.php">Home</a></li>
-            <li><a href="stats.html">MK8 Statistics</a></li>
+            <li><a href="stats.php">MK8 Statistics</a></li>
             <li><a href="customizations.php">My Customizations</a></li>
             <li><a href="compare.php">Compare Customizations</a></li>
         </ul>
