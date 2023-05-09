@@ -40,7 +40,6 @@
                                         "FROM users ".
                                         "WHERE username = ?;");
       $statement->bind_param("s", $_POST["username"]);
-    
       $statement->execute();
       $statement->bind_result($password_hash);
     
@@ -52,27 +51,17 @@
           $_SESSION["username"] = $_POST["username"];
         }
       } else {
-        $statement->close();
+        echo "hello";
         $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
         $statement = $connection->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
         $statement->bind_param("ss", $_POST["username"], $password_hash);
         if ($statement->execute()) {
           $_SESSION["username"] = $_POST["username"];
         }
-        $error = true;
       }
-    }
-    
-    $sql = "SELECT * FROM users";
-    $result = $connection->query($sql);
-    while ($row = $result->fetch_assoc()) {
-      echo "Username: " . $row["username"] . "<br>";
-      echo "Password: " . $row["password_hash"] . "<br>";
-      echo "<br>";
+      $error = true;
     }
     $connection->close();
-    
-    
     
      ?>
         <?php
@@ -84,9 +73,7 @@
                                  "?".$_SERVER["QUERY_STRING"]; ?>"
               method="post">
           <label for="username">Username</label>
-          <input name="username" type="text"
-                 value="<?php if (isset($_POST["username"]))
-                                echo $_POST["username"]; ?>" />
+          <input name="username" type="text" />
           <label for="password">Password</label>
           <input name="password" type="password" />
     
@@ -94,6 +81,16 @@
         </form>
     <br>
     <h2>Don't have an account? Create one!</h2>
+
+    <script>
+      const username = "<?php echo $_SESSION['username'] ?>";
+      document.write("Logged in as: " + username);
+    </script>
+    <?php if (isset($_SESSION["username"])): ?>
+      <form action="logout.php" method="post">
+      <input type="submit" value="Log out">
+    </form>
+<?php endif; ?>
     
 </body>
 

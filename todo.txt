@@ -1,0 +1,7 @@
+move the "logged in as" form to the bottom of each page (it will appear if you are logged in as someone)
+mess with .sql to foreign key the user to customizations
+use insert into to link the user to a customization in customizations on customizations.php
+fix the alignment with the customizations on customizations.php
+
+pretty much done
+push, then I will delete my repo then re-clone

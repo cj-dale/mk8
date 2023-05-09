@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 
+<?php
+session_start();
+?>
+
 <head>
     <link rel="stylesheet" type="text/css" href="mk8.css" media="screen" />
 </head>
@@ -150,5 +154,15 @@
         height: auto; float: left;" src="glider.jpg" alt="glider">
     
 </body>
+
+    <script>
+      const username = "<?php echo $_SESSION['username'] ?>";
+      document.write("Logged in as: " + username);
+    </script>
+    <?php if (isset($_SESSION["username"])): ?>
+      <form action="logout.php" method="post">
+      <input type="submit" value="Log out">
+    </form>
+    <?php endif; ?>
 
 </html>
