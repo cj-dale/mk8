@@ -67,3 +67,11 @@ h3{
     margin-left: auto;
     margin-right: 0;
   }
+  
+  #table2{
+    width: 500px;
+    display: block;
+    table-layout: fixed;
+    float: right;
+    margin-right: 10%;
+  }

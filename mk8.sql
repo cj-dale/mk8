@@ -12,15 +12,13 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS customizations (
-  username VARCHAR(255) PRIMARY KEY,
+  username VARCHAR(255),
   name VARCHAR(255),
   character_ VARCHAR(255),
-  speed FLOAT,
-  acceleration FLOAT,
-  weight FLOAT,
-  handling FLOAT,
-  traction FLOAT,
-  miniturbo FLOAT
+  vehicle VARCHAR(255),
+  wheel VARCHAR(255),
+  glider VARCHAR(255),
+  FOREIGN KEY (username) REFERENCES users(username)
 );
 
 CREATE TABLE characters (
