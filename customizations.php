@@ -114,8 +114,8 @@ session_start();
         <div style="text-align: right;">
             <h3>My Customizations</h3>
             <?php
-            // Connect to the database
             
+            // Connect to the database
             $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
 
             // Check connection
@@ -128,7 +128,8 @@ session_start();
                 $username = $_SESSION['username'];
                 $statement = $connection->prepare("SELECT * FROM customizations WHERE username = ?");
                 $statement->bind_param("s", $username);
-                $result = $statement->execute();
+                $statement->execute();
+                $result = $statement->get_result();
             }
 
             // Display the results
