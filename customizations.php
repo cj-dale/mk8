@@ -124,14 +124,15 @@ session_start();
             }
 
             // Select all values from the customizations table
-            $username = $_SESSION['username'];
-            $statement = $connection->prepare("SELECT * FROM customizations WHERE username = ?");
-            $statement->bind_param("s", $username);
-            $statement->execute();
-            $result = $statement->get_result();
+            if(isset($_SESSION['username'])) {
+                $username = $_SESSION['username'];
+                $statement = $connection->prepare("SELECT * FROM customizations WHERE username = ?");
+                $statement->bind_param("s", $username);
+                $result = $statement->execute();
+            }
 
             // Display the results
-            if ($result) {
+            if (isset($result)) {
                 if (mysqli_num_rows($result) > 0) {
                     $i = 1;
                     while ($row = mysqli_fetch_assoc($result)) {
