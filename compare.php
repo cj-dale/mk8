@@ -36,31 +36,35 @@ session_start();
 
 
     <?php
-    $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
-    $table = $connection->prepare("SELECT customization_name FROM customizations");
-    $table->execute();
-    $results = $table->get_result();
+    if(isset($_SESSION['username'])) {
+        $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
+        $username = $_SESSION['username'];
+        $table = $connection->prepare("SELECT customization_name FROM customizations WHERE username = ?");
+        $table->bind_param("s", $username);
+        $table->execute();
+        $results = $table->get_result();
 
-    if ($results->num_rows > 0) {
-        echo ('<h3>Customization 1:</h3>
-      <form method="post" action="compare.php"> 
-          <select name="1" id="1">');
-        while ($row = $results->fetch_assoc()) {
-            echo '<option value ="' . $row['customization_name'] . '">' . $row['customization_name'] . '</option>';
-        }
-        echo '</select>';
+        if ($results->num_rows > 0) {
+            echo ('<h3>Customization 1:</h3>
+        <form method="post" action="compare.php"> 
+            <select name="1" id="1">');
+            while ($row = $results->fetch_assoc()) {
+                echo '<option value ="' . $row['customization_name'] . '">' . $row['customization_name'] . '</option>';
+            }
+            echo '</select>';
 
-        echo '<h3> Customization 2:</h3>';
+            echo '<h3> Customization 2:</h3>';
 
-        $results->data_seek(0); // reset the pointer to the beginning of the result set
-        echo '<select name="2" id="2">';
-        while ($row = $results->fetch_assoc()) {
-            echo '<option value ="' . $row['customization_name'] . '">' . $row['customization_name'] . '</option>';
-        }
-        echo '</select>
-      <br><br><input type="submit" value="Compare">
-      </form>';
-    } else {
+            $results->data_seek(0); // reset the pointer to the beginning of the result set
+            echo '<select name="2" id="2">';
+            while ($row = $results->fetch_assoc()) {
+                echo '<option value ="' . $row['customization_name'] . '">' . $row['customization_name'] . '</option>';
+            }
+            echo '</select>
+        <br><br><input type="submit" value="Compare">
+        </form>';
+        } }
+        else {
         echo ("<br><br><br>You haven't saved any customizations yet - make some to use the compare feature!");
     }
     ?>
@@ -70,6 +74,7 @@ session_start();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_SESSION['username'])) {
+            if (isset($_POST['1']) && isset($_POST['2'])) {
             $customization1 = $_POST['1'];
             $customization2 = $_POST['2'];
 
@@ -102,6 +107,7 @@ session_start();
             INNER JOIN glider ON customizations.glider = glider.name
             WHERE customizations.customization_name = ?
         ");
+            echo "made it here";
             $statement->bind_param("ss", $customization1, $customization2);
             $statement->execute();
             $result = $statement->get_result();
@@ -144,7 +150,7 @@ session_start();
 
                 </div>
             <?php }
-        }
+        }}
     } ?>
 </body>
 
