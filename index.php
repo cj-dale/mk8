@@ -23,7 +23,6 @@
 
     <h2>Log-In</h2>
     <p>View statistics, compare vehicle customizations and save your own!</p>
-    <br><br>
     
     <?php
     //dr coffman code
@@ -71,6 +70,7 @@ if (!isset($_SESSION["username"])) {
     <input type="submit" value="Log in" />
   </form>
   <br>
+  <h2>Don't have an account? Create one!</h2>
   <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
     <label for="new_username">New Username</label>
     <input name="new_username" type="text" />
