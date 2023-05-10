@@ -49,40 +49,39 @@
         if (password_verify($_POST["password"], $password_hash)) {
           // store the username to indicate authentication
           $_SESSION["username"] = $_POST["username"];
+        } else {
+          $error = true;
         }
       } else {
-        echo "hello";
-        $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
-        $statement = $connection->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
-        $statement->bind_param("ss", $_POST["username"], $password_hash);
-        if ($statement->execute()) {
-          $_SESSION["username"] = $_POST["username"];
-        }
+        $error = true;
       }
-      $error = true;
     }
-    $connection->close();
-    
-     ?>
-        <?php
-          if ($error) {
-            echo "Invalid username or password.";
-          }
-         ?>
-        <form action="<?php echo $_SERVER["PHP_SELF"].
-                                 "?".$_SERVER["QUERY_STRING"]; ?>"
-              method="post">
-          <label for="username">Username</label>
-          <input name="username" type="text" />
-          <label for="password">Password</label>
-          <input name="password" type="password" />
-    
-          <input type="submit" value="Log in" />
-        </form>
-    <br>
-    <h2>Don't have an account? Create one!</h2>
+    ?>
 
-    <script>
+    
+<?php
+if (!isset($_SESSION["username"])) {
+  // Show login form
+?>
+  <form action="<?php echo $_SERVER["PHP_SELF"]. "?".$_SERVER["QUERY_STRING"]; ?>" method="post">
+    <label for="username">Username</label>
+    <input name="username" type="text" />
+    <label for="password">Password</label>
+    <input name="password" type="password" />
+    <input type="submit" value="Log in" />
+  </form>
+  <br>
+  <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+    <label for="new_username">New Username</label>
+    <input name="new_username" type="text" />
+    <label for="new_password">New Password</label>
+    <input name="new_password" type="password" />
+    <input type="submit" name="create_account" value="Create Account" />
+  </form>
+<?php
+} else {
+?>
+  <script>
       const username = "<?php echo $_SESSION['username'] ?>";
       document.write("Logged in as: " + username);
     </script>
@@ -91,6 +90,35 @@
       <input type="submit" value="Log out">
     </form>
 <?php endif; ?>
+<?php
+}
+
+if (isset($_POST["create_account"])) {
+  $new_username = $_POST["new_username"];
+  $new_password = $_POST["new_password"];
+
+  // Check if user already exists
+  $statement = $connection->prepare("SELECT * FROM users WHERE username = ?");
+  $statement->bind_param("s", $new_username);
+  $statement->execute();
+  $result = $statement->get_result();
+  if ($result->num_rows > 0) {
+    echo "<p>User $new_username already exists. Please choose another username.</p>";
+  } else {
+    // Create new user
+    $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+    $statement = $connection->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
+    $statement->bind_param("ss", $new_username, $password_hash);
+    if ($statement->execute()) {
+      $_SESSION["username"] = $new_username;
+      echo "<p>User $new_username created successfully, now logged in as $new_username</p>";
+    } else {
+      echo "<p>Error creating user $new_username.</p>";
+    }
+  }
+}
+?>
+<br>
     
 </body>
 
