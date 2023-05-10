@@ -32,12 +32,11 @@ session_start();
       <input type="submit" value="Log out">
     </form>
     <?php endif; ?>
-    <div>
-        <h3 style="display: inline;
-    float: left;
-    padding-left: 30%; ">Make your own customization!</h3>
-        <h3 style="display: inline; padding-right: 20%; padding-top: 0px;">My Customizations</h3>
-        <form method="post" action="customizations.php" class="center" style="display: inline-block; float: left;">
+    
+    <div style="display: flex; justify-content: center;">
+    <div style="text-align: left; margin-right: 120px;">
+        <h3>Make your own customization!</h3>
+        <form method="post" action="customizations.php">
             <label for="name">Name this customization:</label><br>
             <input type="text" id="name" name="name"><br><br>
             <label for="character">Character:</label><br>
@@ -85,62 +84,74 @@ session_start();
             }
             echo '</select>';
             ?><br><br>
-            <br>
             <input type="submit" value="Save">
-        </form>
-
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $connection = new mysqli("localhost", "student", "CompSci364","MK8");
-            //$username = mysqli_query($connection, "SELECT user FROM users WHERE id = SESSION_ID")
-            $name = $_POST['name'];
-            $character = $_POST['character'];
-            $vehicle = $_POST['vehicle'];
-            $wheel = $_POST['wheel'];
-            $glider = $_POST['glider'];
-
-            $sql = "INSERT INTO customizations (user, name, character, vehicle, wheel, glider) VALUES ('$username', '$name', '$vehicle', '$wheel', 
-            '$glider')";
-            mysqli_query($connection, $sql);    
-        }
-        ?>
-
-        <ul style="display: inline-block;">
             <?php
-            if (filesize('customizations.txt') == 0) {
-                echo "No customizations yet.";
-            } else {
-                $customizations = unserialize(file_get_contents('customizations.txt'));
-
-                foreach ($customizations as $key => $customization) {
-                    $name = $customization['name'];
-                    echo '<li><a href="customization.php?name=' . urlencode($name) . '">' . $name . '</a></li>';
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    
+                    if (isset($_SESSION['username'])){
+                        echo "Form submitted2";
+                        $connection = new mysqli("localhost", "student", "CompSci364","MK8");
+                        $username = $_SESSION['username'];
+                        $name = $_POST['name'];
+                        $character = $_POST['character'];
+                        $vehicle = $_POST['vehicle'];
+                        $wheel = $_POST['wheel'];
+                        $glider = $_POST['glider'];
+                        echo($character);
+                        $sql = "INSERT INTO customizations (user, name, character_, vehicle, wheel, glider) VALUES ('$username', '$name', '$character', '$vehicle', '$wheel', '$glider')";
+                        mysqli_query($connection, $sql);
+                    }
+                    else{
+                        echo ("This feature is only available for registered users.");
+                    }
                 }
-            }
-            ?>
-        </ul>
-
-        <?php
-        if (isset($_GET['name'])) {
-            $name = $_GET['name'];
-            $customizations = unserialize(file_get_contents('customizations.txt'));
-
-            foreach ($customizations as $key => $customization) {
-                if ($customization['name'] == $name) {
-                    $character = $customization['character'];
-                    $vehicle = $customization['vehicle'];
-                    $wheel = $customization['wheel'];
-                    $glider = $customization['glider'];
-
-                    echo "<h2>Customization for $name</h2>";
-                    echo "<p>Character: $character</p>";
-                    echo "<p>Vehicle: $vehicle</p>";
-                    echo "<p>Wheel: $wheel</p>";
-                    echo "<p>Glider: $glider</p>";
-                }
-            }
-        }
         ?>
+        </form>
+    </div>
+    <div style="text-align: right;">
+        <h3>My Customizations</h3>
+        <?php
+            $connection = new mysqli("localhost", "student", "CompSci364","MK8");
+            $table = mysqli_query($connection, "SELECT * FROM customizations");
+            $count = mysqli_query($connection, "SELECT COUNT(*) FROM customizations");
+            $num_rows = mysqli_num_rows($count);
+            $row = mysqli_fetch_assoc($table);
+            echo($row);
+            //echo($num_rows);
+            if ($num_rows > 1){
+                echo '<table cellpadding="1" cellspacing="1" border="1">';
+                echo "<tr>
+                <th> Name<br></th>
+                <th> Character<br></th>
+                <th> Speed<br></th>
+                <th> Acceleration<br></th>
+                <th> Weight<br></th>
+                <th> Handling<br></th>
+                <th> Traction<br></th>
+                <th> Mini-Turbo<br></th>
+                </tr>";
+                while ($row = mysqli_fetch_assoc($table)) {
+                    echo "<tr>
+                        <td>" . $row['name'] . "</td>
+                        <td>" . $row['character_'] . "</td>
+                        <td>" . $row['speed'] . "</td>
+                        <td>" . $row['acceleration'] . "</td>
+                        <td>" . $row['weight'] . "</td>
+                        <td>" . $row['handling'] . "</td>
+                        <td>" . $row['traction'] . "</td>
+                        <td>" . $row['miniturbo'] . "</td>
+                    </tr>";
+                }
+                echo "</table>";
+                mysqli_close($connection);
+        }
+        else{
+            echo("No customizations saved");
+            //echo "Error: " . mysqli_error($connection);
+        }
+            ?>
+    </div>
+</div>
     </div>
 </body>
 

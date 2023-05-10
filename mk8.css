@@ -50,4 +50,20 @@ h3{
     text-align: left;
     padding-left: 30%;
 }
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   
+  .make-customization {
+    width: 50%;
+    margin-right: auto;
+    margin-left: 0;
+  }
+  
+  .my-customizations {
+    width: 50%;
+    margin-left: auto;
+    margin-right: 0;
+  }

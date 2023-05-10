@@ -34,31 +34,37 @@ session_start();
         </form>
     <?php endif; ?>
 
-    <h3>Customization 1:</h3>
-    <form method="post" action="compare.php">
+    
         <?php
-        $fileContents = file_get_contents('customizations.txt');
-        $customizations = unserialize($fileContents);
+        $connection = new mysqli("localhost", "student", "CompSci364","MK8");
+        $table = mysqli_query($connection, "SELECT name FROM customizations");
+        $count = mysqli_query($connection, "SELECT COUNT(*) FROM customizations");
+        $num_rows = mysqli_num_rows($count);
+        
+        
+        if ($num_rows > 1){
+            echo('<h3>Customization 1:</h3>
+                <form method="post" action="compare.php" <select name="1" id="1">');
+            while ($row = mysqli_fetch_assoc($table)){
+                echo 
+                '<option value ='.$row['name'].'>'.$row['name'].'</option>';
+            }
+            echo '</select>';
+            
+            echo '<h3> Customization 2:</h3>';
 
-        echo '<select name="customization">';
-        foreach ($customizations as $c) {
-            echo '<option value="' . $c['name'] . '">' . $c['name'] . '</option>';
+            echo '<select name="2" id="2">';
+            while ($row = mysqli_fetch_assoc($table)){
+                echo 
+                '<option value ='.$row['name'].'>'.$row['name'].'</option>';
+            }
+            echo '</select><input type="submit" value="Compare">';
         }
-        echo '</select>';
-        ?>
-        <h3> Customization 2:</h3>
-
-        <?php
-        $fileContents = file_get_contents('customizations.txt');
-        $customizations = unserialize($fileContents);
-
-        echo '<select name="customization">';
-        foreach ($customizations as $c) {
-            echo '<option value="' . $c['name'] . '">' . $c['name'] . '</option>';
-        }
-        echo '</select>';
-        ?> <br> <br> <br>
-        <input type="submit" value="Compare">
+            else{
+                echo("<br><br><br>You haven't saved any customiations yet - make some to use the compare feature!");
+            }
+            ?> <br> <br> <br>
+        
     </form>
 
 </body>

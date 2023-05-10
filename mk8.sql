@@ -1,16 +1,26 @@
-DROP DATABASE IF EXISTS MK8;
-CREATE DATABASE MK8;
+CREATE DATABASE IF NOT EXISTS MK8;
 USE MK8;
 
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS characters;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS wheels;
 DROP TABLE IF EXISTS gliders;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(255) PRIMARY KEY,
   password_hash VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS customizations (
+  username VARCHAR(255) PRIMARY KEY,
+  name VARCHAR(255),
+  character_ VARCHAR(255),
+  speed FLOAT,
+  acceleration FLOAT,
+  weight FLOAT,
+  handling FLOAT,
+  traction FLOAT,
+  miniturbo FLOAT
 );
 
 CREATE TABLE characters (
