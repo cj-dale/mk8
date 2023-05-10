@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS characters;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS wheels;
 DROP TABLE IF EXISTS gliders;
+DROP TABLE IF EXISTS customizations;
 
 CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(255) PRIMARY KEY,
@@ -13,8 +14,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS customizations (
   username VARCHAR(255),
-  name VARCHAR(255),
-  character_ VARCHAR(255),
+  customization_name VARCHAR(255),
+  character_name VARCHAR(255),
   vehicle VARCHAR(255),
   wheel VARCHAR(255),
   glider VARCHAR(255),

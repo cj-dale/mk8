@@ -24,8 +24,8 @@ session_start();
         </ul>
     </nav>
     <script>
-        $username = "<?php echo $_SESSION['username'] ?>";
-        document.write("Logged in as: " + $username);
+        const username = "<?php echo $_SESSION['username'] ?>";
+        document.write("Logged in as: " + username);
     </script>
     <?php if (isset($_SESSION["username"])): ?>
         <form action="logout.php" method="post">
@@ -33,7 +33,7 @@ session_start();
         </form>
     <?php endif; ?>
 
-    <div style="display: flex; justify-content: center;"> <!--  -->
+    <div style="display: flex; justify-content: center;">
         <div style="text-align: left; margin-right: 120px;">
             <h3>Make your own customization!</h3>
             <form method="post" action="customizations.php">
@@ -87,71 +87,71 @@ session_start();
                 <input type="submit" value="Save">
                 <?php
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    if (isset($_POST['name']) && isset($_POST['character']) && isset($_POST['vehicle']) && isset($_POST['wheel']) && isset($_POST['glider'])) {
-                        if (isset($_SESSION['username'])) {
 
-                            $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
-                            $username = $_SESSION['username'];
-                            $name = $_POST['name'];
-                            $character = $_POST['character'];
-                            $vehicle = $_POST['vehicle'];
-                            $wheel = $_POST['wheel'];
-                            $glider = $_POST['glider'];
+                    if (isset($_SESSION['username'])) {
+                        //echo "Form submitted2";
+                        $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
+                        $username = $_SESSION['username'];
+                        $name = $_POST['name'];
+                        $character = $_POST['character'];
+                        $vehicle = $_POST['vehicle'];
+                        $wheel = $_POST['wheel'];
+                        $glider = $_POST['glider'];
+                        $sql = "INSERT INTO customizations (username, name, character_, vehicle, wheel, glider) VALUES ('$username', '$name', '$character', '$vehicle', '$wheel', '$glider')";
+                        $getcustomizations = "SELECT * FROM customizations";
+                        var_dump($sql);
+                        
+                        $result = mysqli_query($connection, $getcustomizations);
+                        var_dump($result);
 
-                            $statement = $connection->prepare("INSERT INTO customizations (username, customization_name, character_name, vehicle, wheel, glider) VALUES (?, ?, ?, ?, ?, ?)");
-                            $statement->bind_param("ssssss", $username, $name, $character, $vehicle, $wheel, $glider);
-                            $statement->execute();
-
-                        } else {
-                            echo ("This feature is only available for registered users.");
-                        }
+// Loop through the result set and print each row
+while ($row = mysqli_fetch_assoc($result)) {
+    var_dump($row);
+}
                     } else {
-                        echo ("Incomplete form");
+                        echo ("This feature is only available for registered users.");
                     }
                 }
-                ?>
+                
+            echo('</form>
         </div>
         <div style="text-align: right;">
-            <h3>My Customizations</h3>
-            <?php
-            // Connect to the database
-            
-            $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
-
-            // Check connection
-            if (!$connection) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            // Select all values from the customizations table
-            $username = $_SESSION['username'];
-            $statement = $connection->prepare("SELECT * FROM customizations WHERE username = ?");
-            $statement->bind_param("s", $username);
-            $statement->execute();
-            $result = $statement->get_result();
-
-            // Display the results
-            if ($result) {
-                if (mysqli_num_rows($result) > 0) {
-                    $i = 1;
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "Customization " . $i . " Name: " . $row["customization_name"] . "<br>";
-                        echo "Character Name: " . $row["character_name"] . "<br>";
-                        echo "Vehicle: " . $row["vehicle"] . "<br>";
-                        echo "Wheel: " . $row["wheel"] . "<br>";
-                        echo "Glider: " . $row["glider"] . "<br>";
-                        echo "ASSOCIATED USERNAME: " . $row["username"] . "<br>";
-                        $i++;
+            <h3>My Customizations</h3>');
+            if (isset($_SESSION['username'])) {
+                $table = mysqli_query($connection, "SELECT * FROM customizations WHERE username = '" . $_SESSION['username'] . "'");
+                $count = mysqli_query($connection, "SELECT COUNT(*) FROM customizations WHERE username = '" . $_SESSION['username'] . "'");
+                $num_rows = mysqli_num_rows($count);
+                echo($num_rows);
+                var_dump($table);
+                $getcustomizations = "SELECT * FROM customizations";
+                        var_dump($getcustomizations);
+                if ($num_rows > 1) {
+                    echo '<table id = "table2" cellpadding="1" cellspacing="1" border="1">';
+                    echo "<tr>
+                    <th> Name<br></th>
+                    <th> Character<br></th>
+                    <th> Vehicle<br></th>
+                    <th> Wheels<br></th>
+                    <th> Glider<br></th>
+                    </tr>";
+                    while ($row = mysqli_fetch_assoc($table)) {
+                        echo "<tr>
+                            <td>" . $row['name'] . "</td>
+                            <td>" . $row['character_'] . "</td>
+                            <td>" . $row['vehicle'] . "</td>
+                            <td>" . $row['wheel'] . "</td>
+                            <td>" . $row['glider'] . "</td>
+                        </tr>";
                     }
+                    echo "</table>";
+                    mysqli_close($connection);
+                } else {
+                    echo ("No customizations saved");
                 }
-                else {
-                    echo "No customizations yet.";
-                }
-            } else {
-                echo "No customizations yet.";
             }
-
-            mysqli_close($connection);
+            else{
+                echo ("No customizations saved");
+            }
             ?>
         </div>
     </div>

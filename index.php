@@ -29,8 +29,6 @@
   
   // create database connection ($connection)
   $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
-
-  $error = false;
   if (
     !isset($_SESSION["username"]) // already authenticated
     && isset($_POST["username"], $_POST["password"])
@@ -50,10 +48,8 @@
         // store the username to indicate authentication
         $_SESSION["username"] = $_POST["username"];
       } else {
-        $error = true;
+        echo "Invalid username or password.";
       }
-    } else {
-      $error = true;
     }
   }
   ?>
@@ -111,7 +107,8 @@
       $statement->bind_param("ss", $new_username, $password_hash);
       if ($statement->execute()) {
         $_SESSION["username"] = $new_username;
-        echo "<p>User $new_username created successfully, now logged in as $new_username</p>";
+        echo "User $new_username successfully created";
+        header('Location: index.php');
       } else {
         echo "<p>Error creating user $new_username.</p>";
       }
