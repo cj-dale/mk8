@@ -100,8 +100,9 @@ session_start();
                         $sql = "INSERT INTO customizations (username, name, character_, vehicle, wheel, glider) VALUES ('$username', '$name', '$character', '$vehicle', '$wheel', '$glider')";
                         $getcustomizations = "SELECT * FROM customizations";
                         var_dump($sql);
-                        var_dump($getcustomizations);
+                        
                         $result = mysqli_query($connection, $getcustomizations);
+                        var_dump($result);
 
 // Loop through the result set and print each row
 while ($row = mysqli_fetch_assoc($result)) {
