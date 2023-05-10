@@ -142,7 +142,7 @@ session_start();
                         echo "Vehicle: " . $row["vehicle"] . "<br>";
                         echo "Wheel: " . $row["wheel"] . "<br>";
                         echo "Glider: " . $row["glider"] . "<br>";
-                        echo "ASSOCIATED USERNAME: " . $row["username"] . "<br>";
+                        //echo "ASSOCIATED USERNAME: " . $row["username"] . "<br>";
                         $i++;
                     }
                 }

@@ -15,9 +15,9 @@ session_start();
     <nav>
         <ul id="navigation-bar">
             <li><a href="index.php">Home</a></li>
-            <li><a href="stats.html">MK8 Statistics</a></li>
+            <li><a href="stats.php">MK8 Statistics</a></li>
             <li><a href="customizations.php">My Customizations</a></li>
-            <li><a href="compare.html">Compare Customizations</a></li>
+            <li><a href="compare.php">Compare Customizations</a></li>
         </ul>
     </nav>
 
@@ -37,26 +37,26 @@ session_start();
     
         <?php
         $connection = new mysqli("localhost", "student", "CompSci364","MK8");
-        $table = mysqli_query($connection, "SELECT name FROM customizations");
-        $count = mysqli_query($connection, "SELECT COUNT(*) FROM customizations");
-        $num_rows = mysqli_num_rows($count);
+        $table = $connection->prepare("SELECT customization_name FROM customizations");
+        $table->execute();
+        $results = $table->get_result();
+        $results2 = $table->get_result();
         
-        
-        if ($num_rows > 1){
+        if (mysqli_num_rows($results) > 0){
             echo('<h3>Customization 1:</h3>
                 <form method="post" action="compare.php" <select name="1" id="1">');
-            while ($row = mysqli_fetch_assoc($table)){
+            while ($row = mysqli_fetch_assoc($results)){
                 echo 
-                '<option value ='.$row['name'].'>'.$row['name'].'</option>';
+                '<option value ='.$row['customization_name'].'>'.$row['customization_name'].'</option>';
             }
             echo '</select>';
             
             echo '<h3> Customization 2:</h3>';
 
             echo '<select name="2" id="2">';
-            while ($row = mysqli_fetch_assoc($table)){
+            while ($row = mysqli_fetch_assoc($results2)){
                 echo 
-                '<option value ='.$row['name'].'>'.$row['name'].'</option>';
+                '<option value ='.$row['customization_name'].'>'.$row['customization_name'].'</option>';
             }
             echo '</select><input type="submit" value="Compare">';
         }
