@@ -20,6 +20,15 @@ session_start();
             <li><a href="compare.php">Compare Customizations</a></li>
         </ul>
     </nav>
+    <script>
+      const username = "<?php echo $_SESSION['username'] ?>";
+      document.write("Logged in as: " + username);
+    </script>
+    <?php if (isset($_SESSION["username"])): ?>
+      <form action="logout.php" method="post">
+      <input type="submit" value="Log out">
+    </form>
+    <?php endif; ?>
     <h3>Character</h3>
     <br>
     <?php
@@ -154,15 +163,5 @@ session_start();
         height: auto; float: left;" src="glider.jpg" alt="glider">
     
 </body>
-
-    <script>
-      const username = "<?php echo $_SESSION['username'] ?>";
-      document.write("Logged in as: " + username);
-    </script>
-    <?php if (isset($_SESSION["username"])): ?>
-      <form action="logout.php" method="post">
-      <input type="submit" value="Log out">
-    </form>
-    <?php endif; ?>
 
 </html>

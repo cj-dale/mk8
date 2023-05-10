@@ -57,7 +57,6 @@
     }
     ?>
 
-    
 <?php
 if (!isset($_SESSION["username"])) {
   // Show login form

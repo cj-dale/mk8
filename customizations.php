@@ -23,6 +23,15 @@ session_start();
             <li><a href="compare.php">Compare Customizations</a></li>
         </ul>
     </nav>
+    <script>
+      const username = "<?php echo $_SESSION['username'] ?>";
+      document.write("Logged in as: " + username);
+    </script>
+    <?php if (isset($_SESSION["username"])): ?>
+      <form action="logout.php" method="post">
+      <input type="submit" value="Log out">
+    </form>
+    <?php endif; ?>
     <div>
         <h3 style="display: inline;
     float: left;
@@ -134,15 +143,5 @@ session_start();
         ?>
     </div>
 </body>
-
-    <script>
-      const username = "<?php echo $_SESSION['username'] ?>";
-      document.write("Logged in as: " + username);
-    </script>
-    <?php if (isset($_SESSION["username"])): ?>
-      <form action="logout.php" method="post">
-      <input type="submit" value="Log out">
-    </form>
-    <?php endif; ?>
 
 </html>

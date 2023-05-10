@@ -20,8 +20,20 @@ session_start();
             <li><a href="compare.html">Compare Customizations</a></li>
         </ul>
     </nav>
+
     <img style="width: 400px;
     height: auto;" src="compare.jpg" alt="compare_customizations">
+    <br>
+    <script>
+        const username = "<?php echo $_SESSION['username'] ?>";
+        document.write("Logged in as: " + username);
+    </script>
+    <?php if (isset($_SESSION["username"])): ?>
+        <form action="logout.php" method="post">
+            <input type="submit" value="Log out">
+        </form>
+    <?php endif; ?>
+
     <h3>Customization 1:</h3>
     <form method="post" action="compare.php">
         <?php
@@ -50,15 +62,5 @@ session_start();
     </form>
 
 </body>
-
-    <script>
-      const username = "<?php echo $_SESSION['username'] ?>";
-      document.write("Logged in as: " + username);
-    </script>
-    <?php if (isset($_SESSION["username"])): ?>
-      <form action="logout.php" method="post">
-      <input type="submit" value="Log out">
-    </form>
-    <?php endif; ?>
 
 </html>
