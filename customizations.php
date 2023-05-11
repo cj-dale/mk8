@@ -109,13 +109,12 @@ session_start();
                     } else {
                         echo ("This feature is only available for registered users.");
                     }
-                } else {
-                    echo ("Incomplete form");
                 }
             }
             ?>
         </div>
-        <div style="text-align: right;">
+        <div style="text-align: left
+        ">
             <h3>My Customizations</h3>
             <?php
 
@@ -163,10 +162,10 @@ session_start();
                         $id = $i;
                         $statement->bind_param("is", $id, $username);
                         $statement->execute();
-                        echo "<td><input type='hidden' name='id' value='" . $row["id"] . "'>
-                        <input type= 'submit' value='Update' name='update'></td>";
+                        echo "<td><input type='hidden' name='id' value='" . $i . "'>
+                        <input type= 'submit' value='Update' name='updatebutton' id = '" . $i . "'></td>";
 
-                        echo "<td><input type= 'submit' value='Delete' name='Delete' id = '" . $i . "'></td></form>";
+                        echo "<td><input type= 'submit' value='Delete' name='deletebutton' id = '" . $i . "'></td></form>";
                         $i++;
 
                         //var_dump($_POST);
@@ -187,10 +186,10 @@ session_start();
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['form_id'])) {
                     if ($_POST['form_id'] == 'form2') {
-                        if ($_POST['Delete'] == 'Delete') {
+                        if ($_POST['deletebutton'] == 'Delete') {
                             $username = $_SESSION['username'];
-                            $id = $_POST['id'];
-                            var_dump($id);
+                            //$id = $_POST 
+                            //var_dump($id);
                             echo("i'm here!");
                             $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
                             $statement = $connection->prepare("DELETE FROM customizations WHERE username = ? AND id = ?");

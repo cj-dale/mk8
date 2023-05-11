@@ -32,7 +32,7 @@ table {
     display: block;
     table-layout: fixed;
     float: right;
-    width: 700px;
+    width: auto;
     margin-right: 10%;
 }
 td{

@@ -135,7 +135,12 @@ session_start();
     // Establish a connection to the database
     $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
     $table = mysqli_query($connection, "SELECT * FROM gliders");
-    echo '<table cellpadding="1" cellspacing="1" border="1">';
+    echo '<table cellpadding="1" cellspacing="1" border="1" style = "display: block;
+    table-layout: fixed;
+    float: right;
+    width: 700px;
+    margin-right: 10%
+    margin-left: 10%;">';
     echo "<tr>
     <th> Glider <br></th>
     <th> Speed<br></th>

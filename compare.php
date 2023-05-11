@@ -81,6 +81,7 @@ session_start();
 
                 $statement1 = $connection->prepare("
                 SELECT 
+                    
                     SUM(characters.speed + vehicles.speed + wheels.speed + gliders.speed) AS total_speed,
                     SUM(characters.acceleration + vehicles.acceleration + wheels.acceleration + gliders.acceleration) AS total_acceleration,
                     SUM(characters.traction + vehicles.traction + wheels.traction + gliders.traction) AS total_traction,
@@ -104,11 +105,11 @@ session_start();
                 }
                 $result1 = $statement1->get_result();
                 if ($result1) {
-                    echo "<br><br> <table>";
+                    echo '<br><br><table width = "auto" cellpadding="1" cellspacing="1" border="1">';
                     echo "<tr><th>Customization</th><th>Total Speed</th><th>Total Acceleration</th><th>Total Traction</th><th>Total Handling</th><th>Total Mini Turbo</th></tr>";
                     while ($row = $result1->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . "1" . "</td>";
+                        echo "<td>" . $customization1. "</td>";
                         echo "<td>" . $row["total_speed"] . "</td>";
                         echo "<td>" . $row["total_acceleration"] . "</td>";
                         echo "<td>" . $row["total_traction"] . "</td>";
@@ -144,11 +145,11 @@ session_start();
                 }
                 $result2 = $statement2->get_result();
                 if ($result2) {
-                    echo "<table>";
+                    echo '<table cellpadding="1" cellspacing="1" border="1">';
                     echo "<tr><th>Customization</th><th>Total Speed</th><th>Total Acceleration</th><th>Total Traction</th><th>Total Handling</th><th>Total Mini Turbo</th></tr>";
                     while ($row = $result2->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . "2" . "</td>";
+                        echo "<td>" . $customization2. "</td>";
                         echo "<td>" . $row["total_speed"] . "</td>";
                         echo "<td>" . $row["total_acceleration"] . "</td>";
                         echo "<td>" . $row["total_traction"] . "</td>";
