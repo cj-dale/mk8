@@ -36,7 +36,7 @@ session_start();
 
 
     <?php
-    if(isset($_SESSION['username'])) {
+    if (isset($_SESSION['username'])) {
         $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
         $username = $_SESSION['username'];
         $table = $connection->prepare("SELECT customization_name FROM customizations WHERE username = ?");
@@ -47,7 +47,7 @@ session_start();
         if ($results->num_rows > 0) {
             echo ('<h3>Customization 1:</h3>
         <form method="post" action="compare.php"> 
-            <select name="1" id="1">');
+            <select name="customization1" id="customization1">');
             while ($row = $results->fetch_assoc()) {
                 echo '<option value ="' . $row['customization_name'] . '">' . $row['customization_name'] . '</option>';
             }
@@ -56,15 +56,15 @@ session_start();
             echo '<h3> Customization 2:</h3>';
 
             $results->data_seek(0); // reset the pointer to the beginning of the result set
-            echo '<select name="2" id="2">';
+            echo '<select name="customization2" id="customization2">';
             while ($row = $results->fetch_assoc()) {
                 echo '<option value ="' . $row['customization_name'] . '">' . $row['customization_name'] . '</option>';
             }
             echo '</select>
         <br><br><input type="submit" value="Compare">
         </form>';
-        } }
-        else {
+        }
+    } else {
         echo ("<br><br><br>You haven't saved any customizations yet - make some to use the compare feature!");
     }
     ?>
@@ -74,84 +74,50 @@ session_start();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_SESSION['username'])) {
-            if (isset($_POST['1']) && isset($_POST['2'])) {
-            $customization1 = $_POST['1'];
-            $customization2 = $_POST['2'];
+            if (isset($_POST['customization1']) && isset($_POST['customization2'])) {
+                $customization1 = $_POST['customization1'];
+                $customization2 = $_POST['customization2'];
 
-            $statement = $connection->prepare("
-            SELECT 
-                'Customization 1' AS customization,
-                SUM(character.speed + vehicle.speed + wheel.speed + glider.speed) AS total_speed,
-                SUM(character.acceleration + vehicle.acceleration + wheel.acceleration + glider.acceleration) AS total_acceleration,
-                SUM(character.traction + vehicle.traction + wheel.traction + glider.traction) AS total_traction,
-                SUM(character.handling + vehicle.handling + wheel.handling + glider.handling) AS total_handling,
-                SUM(character.miniturbo + vehicle.miniturbo + wheel.miniturbo + glider.miniturbo) AS total_mini_turbo
-            FROM customizations
-            INNER JOIN character ON customizations.character = character.name
-            INNER JOIN vehicle ON customizations.vehicle = vehicle.name
-            INNER JOIN wheel ON customizations.wheel = wheel.name
-            INNER JOIN glider ON customizations.glider = glider.name
-            WHERE customizations.customization_name = ?
-            UNION
-            SELECT 
-                'Customization 2' AS customization,
-                SUM(character.speed + vehicle.speed + wheel.speed + glider.speed) AS total_speed,
-                SUM(character.acceleration + vehicle.acceleration + wheel.acceleration + glider.acceleration) AS total_acceleration,
-                SUM(character.traction + vehicle.traction + wheel.traction + glider.traction) AS total_traction,
-                SUM(character.handling + vehicle.handling + wheel.handling + glider.handling) AS total_handling,
-                SUM(character.miniturbo + vehicle.miniturbo + wheel.miniturbo + glider.miniturbo) AS total_mini_turbo
-            FROM customizations
-            INNER JOIN character ON customizations.character = character.name
-            INNER JOIN vehicle ON customizations.vehicle = vehicle.name
-            INNER JOIN wheel ON customizations.wheel = wheel.name
-            INNER JOIN glider ON customizations.glider = glider.name
-            WHERE customizations.customization_name = ?
-        ");
-            echo "made it here";
-            $statement->bind_param("ss", $customization1, $customization2);
-            $statement->execute();
-            $result = $statement->get_result();
-            if (isset($result)) {
+                $statement1 = $connection->prepare("
+                SELECT 
+                    SUM(characters.speed + vehicles.speed + wheels.speed + gliders.speed) AS total_speed,
+                    SUM(characters.acceleration + vehicles.acceleration + wheels.acceleration + gliders.acceleration) AS total_acceleration,
+                    SUM(characters.traction + vehicles.traction + wheels.traction + gliders.traction) AS total_traction,
+                    SUM(characters.handling + vehicles.handling + wheels.handling + gliders.handling) AS total_handling,
+                    SUM(characters.miniturbo + vehicles.miniturbo + wheels.miniturbo + gliders.miniturbo) AS total_mini_turbo
+                FROM customizations
+                INNER JOIN characters ON customizations.character_name = characters.name
+                INNER JOIN vehicles ON customizations.vehicle = vehicles.name
+                INNER JOIN wheels ON customizations.wheel = wheels.name
+                INNER JOIN gliders ON customizations.glider = gliders.name
+                WHERE customizations.customization_name = ? OR customizations.customization_name = ?
+");
+                if (!$statement1) {
+                    die("Error in query: " . $connection->error);
+                }
+                $statement1->bind_param("ss", $customization1, $customization2);
+                $statement1->execute();
+                if ($statement1->error) {
+                    die("Error in query: " . $statement1->error);
+                }
+                $result = $statement1->get_result();
+                if ($result) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "Total Speed: " . $row["total_speed"] . "<br>";
+                        echo "Total Acceleration: " . $row["total_acceleration"] . "<br>";
+                        echo "Total Traction: " . $row["total_traction"] . "<br>";
+                        echo "Total Handling: " . $row["total_handling"] . "<br>";
+                        echo "Total Mini Turbo: " . $row["total_mini_turbo"] . "<br><br>";
+                    }
+                }
+
+
                 ?>
-
-                <div>
-                    <h2>Comparison Results:</h2>
-                    <table>
-                        <tr>
-                            <th></th>
-                            <th>Speed</th>
-                            <th>Acceleration</th>
-                            <th>Traction</th>
-                            <th>Handling</th>
-                            <th>Mini-Turbo</th>
-                        </tr>
-                        <td>
-                            <?php while ($row = $result->fetch_assoc()): ?>
-                                <tr>
-                                    <td>
-                                        <?php echo $row["customization"] ?>
-                                    </td>
-                                    <?php echo $row["total_speed"] ?>
-                            </td>
-                            <td>
-                                <?php echo $row["total_acceleration"] ?>
-                            </td>
-                            <td>
-                                <?php echo $row["total_traction"] ?>
-                            </td>
-                            <td>
-                                <?php echo $row["total_handling"] ?>
-                            </td>
-                            <td>
-                                <?php echo $row["total_mini_turbo"] ?>
-                            </td>
-                            </tr>
-                        <?php endwhile; ?>
-
                 </div>
             <?php }
-        }}
-    } ?>
+        }
+    }
+    ?>
 </body>
 
 </html>
