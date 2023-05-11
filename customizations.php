@@ -47,7 +47,7 @@ session_start();
                 echo '<select name="character" id="character">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option name="form_id" value =' . $row['name'] . '>' . $row['name'] . '</option>';
+                        '<option value ="' . $row['name'] . '">' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?>
@@ -59,7 +59,7 @@ session_start();
                 echo '<select name="vehicle" id="vehicle">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option name="form_id" value =' . $row['name'] . '>' . $row['name'] . '</option>';
+                        '<option value ="' . $row['name'] . '">' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?><br><br>
@@ -70,7 +70,7 @@ session_start();
                 echo '<select name="wheel" id="wheel">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option name="form_id" value =' . $row['name'] . '>' . $row['name'] . '</option>';
+                        '<option value ="' . $row['name'] . '">' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?><br><br>
@@ -81,7 +81,7 @@ session_start();
                 echo '<select name="glider" id="glider">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option value =' . $row['name'] . '>'  . $row['name'] . '</option>';
+                        '<option value ="' . $row['name'] . '">'  . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?><br><br>
@@ -90,15 +90,17 @@ session_start();
             <?php
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['name']) && isset($_POST['character']) && isset($_POST['vehicle']) && isset($_POST['wheel']) && isset($_POST['glider'])) {
-                    if (isset($_SESSION['username'])) {
+                    //if (isset($_SESSION['username'])) {
                         if ($_POST['form_id'] == 'form1') {
                             $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
                             $username = $_SESSION['username'];
                             $name = $_POST['name'];
                             $character = htmlspecialchars($_POST['character']);
+                            var_dump($character);
                             $vehicle = htmlspecialchars($_POST['vehicle']);
                             $wheel = htmlspecialchars($_POST['wheel']);
                             $glider = htmlspecialchars($_POST['glider']);
+                            var_dump($glider);
 
                             $statement = $connection->prepare("INSERT INTO customizations (username, customization_name, character_name, vehicle, wheel, glider) VALUES (?, ?, ?, ?, ?, ?)");
 
@@ -112,7 +114,7 @@ session_start();
                 } else {
                     echo ("Incomplete form");
                 }
-            }
+            //}
             ?>
         </div>
         <div style="text-align: right;">
