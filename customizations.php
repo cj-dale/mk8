@@ -33,10 +33,10 @@ session_start();
         </form>
     <?php endif; ?>
 
-    <div style="display: flex; justify-content: center;"> <!--  -->
+    <div style="display: flex; justify-content: center;">
         <div style="text-align: left; margin-right: 120px;">
             <h3>Make your own customization!</h3>
-            <form method="post" action="customizations.php">
+            <form method="post" action="customizations.php" name="form1">
                 <label for="name">Name this customization:</label><br>
                 <input type="text" id="name" name="name"><br><br>
                 <label for="character">Character:</label><br>
@@ -46,7 +46,7 @@ session_start();
                 echo '<select name="character" id="character">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option value =' . $row['name'] . '>' . $row['name'] . '</option>';
+                        '<option name="form_id" value =' . $row['name'] . '>' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?>
@@ -58,7 +58,7 @@ session_start();
                 echo '<select name="vehicle" id="vehicle">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option value =' . $row['name'] . '>' . $row['name'] . '</option>';
+                        '<option name="form_id" value =' . $row['name'] . '>' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?><br><br>
@@ -69,7 +69,7 @@ session_start();
                 echo '<select name="wheel" id="wheel">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option value =' . $row['name'] . '>' . $row['name'] . '</option>';
+                        '<option name="form_id" value =' . $row['name'] . '>' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?><br><br>
@@ -80,7 +80,7 @@ session_start();
                 echo '<select name="glider" id="glider">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option value =' . $row['name'] . '>' . $row['name'] . '</option>';
+                        '<option name="form_id" value =' . $row['name'] . '>' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?><br><br>
@@ -89,19 +89,21 @@ session_start();
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_POST['name']) && isset($_POST['character']) && isset($_POST['vehicle']) && isset($_POST['wheel']) && isset($_POST['glider'])) {
                         if (isset($_SESSION['username'])) {
+                            if ($_POST['form_id'] == 'form1') {
+                                $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
+                                $username = $_SESSION['username'];
+                                $name = $_POST['name'];
+                                $character = $_POST['character'];
+                                $vehicle = $_POST['vehicle'];
+                                $wheel = $_POST['wheel'];
+                                $glider = $_POST['glider'];
+                                
+                                $statement = $connection->prepare("INSERT INTO customizations (username, customization_name, character_name, vehicle, wheel, glider) VALUES (?, ?, ?, ?, ?, ?)");
 
-                            $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
-                            $username = $_SESSION['username'];
-                            $name = $_POST['name'];
-                            $character = $_POST['character'];
-                            $vehicle = $_POST['vehicle'];
-                            $wheel = $_POST['wheel'];
-                            $glider = $_POST['glider'];
+                                $statement->bind_param("ssssss", $username, $name, $character, $vehicle, $wheel, $glider);
+                                $statement->execute();
 
-                            $statement = $connection->prepare("INSERT INTO customizations (username, customization_name, character_name, vehicle, wheel, glider) VALUES (?, ?, ?, ?, ?, ?)");
-                            $statement->bind_param("ssssss", $username, $name, $character, $vehicle, $wheel, $glider);
-                            $statement->execute();
-
+                            }
                         } else {
                             echo ("This feature is only available for registered users.");
                         }
@@ -114,7 +116,7 @@ session_start();
         <div style="text-align: right;">
             <h3>My Customizations</h3>
             <?php
-            
+
             // Connect to the database
             $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
 
@@ -124,7 +126,7 @@ session_start();
             }
 
             // Select all values from the customizations table
-            if(isset($_SESSION['username'])) {
+            if (isset($_SESSION['username'])) {
                 $username = $_SESSION['username'];
                 $statement = $connection->prepare("SELECT * FROM customizations WHERE username = ?");
                 $statement->bind_param("s", $username);
@@ -135,25 +137,58 @@ session_start();
             // Display the results
             if (isset($result)) {
                 if (mysqli_num_rows($result) > 0) {
-                    $i = 1;
+                    $i = 0;
+                    echo '<table cellpadding="1" cellspacing="1" border="1">';
+                    echo '<tr>';
+                    echo "<th>Name<br></th>";
+                    echo "<th>Character<br></th>";
+                    echo "<th>Vehicle<br></th>";
+                    echo "<th>Wheel<br></th>";
+                    echo "<th>Glider<br></th>";
+                    echo "<th>Update?<br></th>";
+                    echo "<th>Delete?<br></th>";
+                    echo ('<form name="form2" action="customizations.php" method="POST action = ">');
                     while ($row = mysqli_fetch_assoc($result)) {
-                        echo "Customization " . $i . " Name: " . $row["customization_name"] . "<br>";
-                        echo "Character Name: " . $row["character_name"] . "<br>";
-                        echo "Vehicle: " . $row["vehicle"] . "<br>";
-                        echo "Wheel: " . $row["wheel"] . "<br>";
-                        echo "Glider: " . $row["glider"] . "<br>";
+                        echo '<tr>';
+                        echo "<td>" . $row["customization_name"] . "</td>";
+                        echo "<td>" . $row["character_name"] . "</td>";
+                        echo "<td>" . $row["vehicle"] . "</td>";
+                        echo "<td>" . $row["wheel"] . "</td>";
+                        echo "<td>" . $row["glider"] . "</td>";
+                        $statement = $connection->prepare("INSERT INTO customizations (id) VALUES (?)");
+                        $id = $i;
+                        $statement->bind_param("f", $id);
+                        $statement->execute();
+                        echo "<td><input type= 'submit' value='Update' name='form_id' id = '" . $i . "'></td>";
+                        echo "<td><input type= 'submit' value='Delete' name='form_id'id = '" . $i . "'></td>";
+                        $i++;
                         //echo "ASSOCIATED USERNAME: " . $row["username"] . "<br>";
                         $i++;
+                        echo ('</tr>');
                     }
-                }
-                else {
+                } else {
                     echo "No customizations yet.";
                 }
             } else {
                 echo "No customizations yet.";
             }
 
-            mysqli_close($connection);
+            mysqli_close($connection); ?>
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                if (isset($_POST['form_id'])) {
+                    if ($_POST['name'] == 'form2') {
+                        if ($_POST['value'] == 'Delete'){
+                            $username = $_SESSION['username'];
+                            $id = $_POST['id'];
+                            $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
+                            $statement = $connection->prepare("DELETE FROM customizations WHERE username = ? AND id = ?");
+                            $statement->bind_param("sf", $username, $id);
+                            $statement->execute();
+                        }
+                    }
+                }
+            }
             ?>
         </div>
     </div>

@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS customizations (
   username VARCHAR(255),
+  id FLOAT,
   customization_name VARCHAR(255),
   character_name VARCHAR(255),
   vehicle VARCHAR(255),
