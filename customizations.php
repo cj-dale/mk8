@@ -110,49 +110,51 @@ session_start();
                         echo ("This feature is only available for registered users.");
                     }
                 }
+
             }
 
-            echo ('<h3>Update customization?</h3>');
-            echo ('<form method="POST"><input type= "hidden" name="form_id" value="form3">');
-            echo ('<label for="update">Which customization would you like to update?</label><br>
-            <input type="text" name="update">
-            ');
-            echo ('<br><br><label for="update1">Choose attribute to update:</label><br>
-            <select name="update1">
-            <option value ="name">Name</option>
-            <option value ="character_name">Character</option>
-            <option value ="vehicle">Vehicle</option>
-            <option value ="wheel">Wheel</option>
-            <option value ="glider">Glider</option>
-            </select>
-            ');
-            echo ('<br><br><label for="update2">Type the updated value (case sensitive):</label>
-            <br><input type="text" name="update2"><input type="submit" value="Update">
-        ');
+        //     echo ('<h3>Update customization?</h3>');
+        //     echo ('<form method="POST"><input type= "hidden" name="form_id" value="form3">');
+        //     echo ('<label for="update">Which customization would you like to update?</label><br>
+        //     <input type="text" name="update">
+        //     ');
+        //     echo ('<br><br><label for="update1">Choose attribute to update:</label><br>
+        //     <select name="update1">
+        //     <option value ="name">Name</option>
+        //     <option value ="character_name">Character</option>
+        //     <option value ="vehicle">Vehicle</option>
+        //     <option value ="wheel">Wheel</option>
+        //     <option value ="glider">Glider</option>
+        //     </select>
+        //     ');
+        //     echo ('<br><br><label for="update2">Type the updated value (case sensitive):</label>
+        //     <br><input type="text" name="update2"><input type="submit" value="Update">
+        // ');
 
 
 
-            echo ('</form><form method="POST"><input type= "hidden" name="form_id" value="form2"><br><h3> Delete customization?</h3>');
+            echo ('</form><form method="POST"><input type= "hidden" name="form_id" value="form2"><h3> Delete customization?</h3>');
             echo '<label for="delete">Name of customization:</label><br><input type="text" name="delete"><input type="submit" value="Delete"></form></div>';
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['form_id'])) {
-                    if ($_POST['form_id'] == 'form3') {
-                        if (isset($_POST['update1']) && isset($_POST['update2']) && isset($_POST['update'])) {
-                            $username = $_SESSION['username'];
-                            $name = $_POST['update'];
-                            $attribute = $_POST['update1'];
-                            $option = $_POST['update2'];
-                            $statement = $connection->prepare('UPDATE customizations SET $attribute = ? WHERE username=? AND customization_name = ?');
-                            $statement->bind_param('sss', $option, $username, $name);
-                            if (!$statement->execute()) {
-                                $error_message = mysqli_error($connection);
-                                echo "Error: " . $error_message;
-                            }
-                            $statement->execute();
+                    // if ($_POST['form_id'] == 'form3') {
+                    //     if (isset($_POST['update1']) && isset($_POST['update2']) && isset($_POST['update'])) {
+                    //         $username = $_SESSION['username'];
+                    //         $name = $_POST['update'];
+                    //         $attribute = $_POST['update1'];
+                    //         $option = $_POST['update2'];
+                    //         $statement = $connection->prepare('UPDATE customizations SET $attribute = ? WHERE username=? AND customization_name = ?');
+                    //         $statement->bind_param('sss', $option, $username, $name);
+                    //         if (!$statement->execute()) {
+                    //             $error_message = mysqli_error($connection);
+                    //             echo "Error: " . $error_message;
+                    //         }
+                    //         $statement->execute();
 
-                        }
+                    //     }
 
-                    } else if ($_POST['form_id'] == 'form2') {
+                    // } else 
+                    if ($_POST['form_id'] == 'form2') {
                         if (isset($_POST['delete'])) {
                             $username = $_SESSION['username'];
                             $name = $_POST['delete'];
@@ -217,6 +219,8 @@ session_start();
                     } else {
                         echo "No customizations yet.";
                     }
+                }else {
+                    echo "No customizations yet.";
                 }
 
                 ?>
