@@ -96,11 +96,9 @@ session_start();
                             $username = $_SESSION['username'];
                             $name = $_POST['name'];
                             $character = htmlspecialchars($_POST['character']);
-                            var_dump($character);
                             $vehicle = htmlspecialchars($_POST['vehicle']);
                             $wheel = htmlspecialchars($_POST['wheel']);
                             $glider = htmlspecialchars($_POST['glider']);
-                            var_dump($glider);
 
                             $statement = $connection->prepare("INSERT INTO customizations (username, customization_name, character_name, vehicle, wheel, glider) VALUES (?, ?, ?, ?, ?, ?)");
 
@@ -165,12 +163,13 @@ session_start();
                         $id = $i;
                         $statement->bind_param("is", $id, $username);
                         $statement->execute();
-                        echo "<td><input type= 'submit' value='Update' name='update' id = '" . $i . "'></td>";
+                        echo "<td><input type='hidden' name='id' value='" . $row["id"] . "'>
+                        <input type= 'submit' value='Update' name='update'></td>";
 
                         echo "<td><input type= 'submit' value='Delete' name='Delete' id = '" . $i . "'></td></form>";
                         $i++;
 
-                        var_dump($_POST);
+                        //var_dump($_POST);
                         //var_dump($result);
                         //echo "ASSOCIATED USERNAME: " . $row["username"] . "<br>";
                         
@@ -188,9 +187,11 @@ session_start();
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['form_id'])) {
                     if ($_POST['form_id'] == 'form2') {
-                        if ($_POST['name'] == 'Delete') {
+                        if ($_POST['Delete'] == 'Delete') {
                             $username = $_SESSION['username'];
                             $id = $_POST['id'];
+                            var_dump($id);
+                            echo("i'm here!");
                             $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
                             $statement = $connection->prepare("DELETE FROM customizations WHERE username = ? AND id = ?");
                             $statement->bind_param("si", $username, $id);
