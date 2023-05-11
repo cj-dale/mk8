@@ -90,7 +90,7 @@ session_start();
             <?php
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['name']) && isset($_POST['character']) && isset($_POST['vehicle']) && isset($_POST['wheel']) && isset($_POST['glider'])) {
-                    //if (isset($_SESSION['username'])) {
+                    if (isset($_SESSION['username'])) {
                         if ($_POST['form_id'] == 'form1') {
                             $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
                             $username = $_SESSION['username'];
@@ -114,7 +114,7 @@ session_start();
                 } else {
                     echo ("Incomplete form");
                 }
-            //}
+            }
             ?>
         </div>
         <div style="text-align: right;">
@@ -165,10 +165,12 @@ session_start();
                         $id = $i;
                         $statement->bind_param("is", $id, $username);
                         $statement->execute();
-                        echo "<td><input type= 'submit' value='Update' name='form_id' id = '" . $i . "'></td>";
+                        echo "<td><input type= 'submit' value='Update' name='update' id = '" . $i . "'></td>";
 
-                        echo "<td><input type= 'submit' value='Delete' name='form_id'id = '" . $i . "'></td></form>";
+                        echo "<td><input type= 'submit' value='Delete' name='Delete' id = '" . $i . "'></td></form>";
                         $i++;
+
+                        var_dump($_POST);
                         //var_dump($result);
                         //echo "ASSOCIATED USERNAME: " . $row["username"] . "<br>";
                         
@@ -186,7 +188,7 @@ session_start();
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['form_id'])) {
                     if ($_POST['form_id'] == 'form2') {
-                        if ($_POST['value'] == 'Delete') {
+                        if ($_POST['name'] == 'Delete') {
                             $username = $_SESSION['username'];
                             $id = $_POST['id'];
                             $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
