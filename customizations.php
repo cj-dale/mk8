@@ -37,7 +37,7 @@ session_start();
         <div style="text-align: left; margin-right: 120px;">
             <h3>Make your own customization!</h3>
             <form method="post" action="customizations.php">
-            <input type="hidden" name="form_id" value="form1">
+                <input type="hidden" name="form_id" value="form1">
                 <label for="name">Name this customization:</label><br>
                 <input type="text" id="name" name="name"><br><br>
                 <label for="character">Character:</label><br>
@@ -81,7 +81,7 @@ session_start();
                 echo '<select name="glider" id="glider">';
                 while ($row = mysqli_fetch_assoc($table)) {
                     echo
-                        '<option value ="' . $row['name'] . '">'  . $row['name'] . '</option>';
+                        '<option value ="' . $row['name'] . '">' . $row['name'] . '</option>';
                 }
                 echo '</select>';
                 ?><br><br>
@@ -147,10 +147,7 @@ session_start();
                     echo "<th>Vehicle<br></th>";
                     echo "<th>Wheel<br></th>";
                     echo "<th>Glider<br></th>";
-                    echo "<th>Update?<br></th>";
-                    echo "<th>Delete?<br></th>";
-                    echo ('<form action="customizations.php" method="POST">
-                    <input type="hidden" name="form_id" value="form2">');
+                    
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo '<tr>';
                         echo "<td>" . $row["customization_name"] . "</td>";
@@ -158,51 +155,66 @@ session_start();
                         echo "<td>" . $row["vehicle"] . "</td>";
                         echo "<td>" . $row["wheel"] . "</td>";
                         echo "<td>" . $row["glider"] . "</td>";
-                        $statement = $connection->prepare("UPDATE customizations SET id=? WHERE username=?");
-                        $id = $i;
-                        $statement->bind_param("is", $id, $username);
-                        $statement->execute();
-                        echo "<td><input type='hidden' name='id' value='" . $i . "'>
-                        <input type= 'submit' value='Update' name='updatebutton' id = '" . $i . "'></td>";
-
-                        echo "<td><input type= 'submit' value='Delete' name='deletebutton' id = '" . $i . "'></td></form>";
-                        $i++;
-
-                        //var_dump($_POST);
-                        //var_dump($result);
-                        //echo "ASSOCIATED USERNAME: " . $row["username"] . "<br>";
-                        
                         echo ('</tr>');
                     }
                 } else {
                     echo "No customizations yet.";
                 }
-            } else {
-                echo "No customizations yet.";
-            }
+            } 
+            
+            echo('<h3>Update customization?</h3>');
+            echo('<form method="POST"><input type= "hidden" name="form_id" value="form2">');
+            echo('<label for="update">Which customization would you like to update?</label><br>
+            <input type="text" name="update">
+            ');
+            echo('<br><br><label for="update1"><Choose attribute to update:</label>
+            <select name="update1">
+            <option value ="name">Name</option>
+            <option value ="character_name">Character</option>
+            <option value ="vehicle">Vehicle</option>
+            <option value ="wheel">Wheel</option>
+            <option value ="glider">Glider</option>
+            </select>
+            ');
+            echo('<br><br><label for="update2">Type the updated value (case sensitive):</label><br>
+            <br><input type="text" name="update2"><input type="submit" value="Update">
+        ');
 
-            mysqli_close($connection); ?>
-            <?php
+        
+            
+            
+            echo('<br><h3> Delete customization?</h3>');
+            echo '<label for="delete">Name of customization:</label><br><input type="text" name="delete"><input type="submit" value="Delete"></form></div>';
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['form_id'])) {
                     if ($_POST['form_id'] == 'form2') {
-                        if ($_POST['deletebutton'] == 'Delete') {
+                        if (isset($_POST['update1']) && isset($_POST['update2'])&& isset($_POST['update'])){
                             $username = $_SESSION['username'];
-                            //$id = $_POST 
-                            //var_dump($id);
-                            echo("i'm here!");
-                            $connection = new mysqli("localhost", "student", "CompSci364", "MK8");
-                            $statement = $connection->prepare("DELETE FROM customizations WHERE username = ? AND id = ?");
-                            $statement->bind_param("si", $username, $id);
+                            $name = $_POST['update'];
+                            $attribute = $_POST['update1'];
+                            $option = $_POST['update2'];
+                            $statement = $connection->prepare('UPDATE customizations SET ? = ? WHERE username=? AND customization_name = ?');
+                            $statement->bind_param('ssss', $attribute, $option, $username, $name);
                             $statement->execute();
+                            header("Location: customizations.php");
+                        }
+                        if (isset($_POST['delete'])) {
+                            $username = $_SESSION['username'];
+                            $name = $_POST['delete'];
+                            
+                            $customization_name = $row['customization_name'];
+                            $statement = $connection->prepare('DELETE FROM customizations WHERE username=? AND customization_name = ?');
+                            $statement->bind_param('ss', $username, $name);
+                            $statement->execute();
+                            header("Location: customizations.php");
                         }
                     }
                 }
             }
+            
+
             ?>
-        </div>
-    </div>
-    </div>
+  
 </body>
 
 </html>
