@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS customizations (
   vehicle VARCHAR(255),
   wheel VARCHAR(255),
   glider VARCHAR(255),
-  FOREIGN KEY (username) REFERENCES users(username)
+  FOREIGN KEY (username) REFERENCES users(username) ON UPDATE CASCADE
 );
 
 CREATE TABLE characters (
